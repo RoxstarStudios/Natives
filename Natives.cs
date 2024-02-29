@@ -27,7 +27,7 @@ namespace GTAV.Natives.Client
             Function.Call<int>((Hash)0x4100BF0346A8D2C3, ptfxHandle, p1);
             return; 
         }
-        public static int StartVehicleParticleFXLooped(int vehicle, ref string effectName, bool frontBack, bool leftRight, bool localOnly) // _START_VEHICLE_PARTICLE_FX_LOOPED
+        public static int StartVehicleParticleFXLooped(int vehicle, string effectName, bool frontBack, bool leftRight, bool localOnly) // _START_VEHICLE_PARTICLE_FX_LOOPED
         {
             return Function.Call<int>((Hash)0xDF269BE2909E181A, vehicle, effectName, frontBack, leftRight, localOnly);
         }
@@ -179,16 +179,29 @@ namespace GTAV.Natives.Client
         {
             return Function.Call<bool>((Hash)0x6638C0F19DE692FE, vehicleModel); 
         }
-        public static int GetVehicleMaxExhaustBoneCount() //_GET_VEHICLE_MAX_EXHAUST_BONE_COUNT
+        public static int GetVehicleMaxExhaustBoneCount()
         {
             return Function.Call<int>((Hash)0x3EE18B00CD86C54F); 
         }
-        public static bool GetVehicleExhaustBone(int vehicle, int index, ref int boneIndex, ref bool axisX) // GET_CURRENT_TV_SHOW_PLAY_TIME
+        public static bool GetVehicleExhaustBone(int vehicle, int index, ref int boneIndex, ref bool axisX) 
         {
-            return Function.Call<bool>((Hash)0xE728F090D538CB18, vehicle, index, boneIndex, axisX); // i have no fucking clue how this works
+            OutputArgument boneIndexRef = new OutputArgument(-1);
+            OutputArgument axisXRef = new OutputArgument(false);
+            bool result = Function.Call<bool>((Hash)0xE728F090D538CB18, vehicle, index, boneIndexRef, axisXRef);
+            boneIndex = boneIndexRef.GetResult<int>();
+            axisX = axisXRef.GetResult<bool>();
+            return result;
         }
     }
     public class b2944
     {
+    }
+    public class b1604
+    {
+        public static void SetOverrideNitrousLevel(int vehicle, bool toggle, float level, float power, float rechargeTime, bool disableSound) //_SET_WEAPON_PED_DAMAGE_MODIFIER
+        {
+            Function.Call<int>((Hash)0xC8E9B6B71B8E660D, vehicle, toggle, level, power, rechargeTime, disableSound); 
+            return;
+        }
     }
 }
